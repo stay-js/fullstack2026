@@ -8,6 +8,7 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },
+  "explorer.compactFolders": false,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[php]": {
@@ -16,5 +17,12 @@
   "laravel-pint.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
+  },
+
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
   }
 }
