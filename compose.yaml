@@ -59,10 +59,13 @@ services:
       db:
         condition: service_healthy
 
-  mailcatcher:
-    image: dockage/mailcatcher:0.9.0
+  jsonserver:
+    image: idomi27/json-server:26
     networks:
       - fullstack
+    volumes:
+      - ./jsonserver:/app
+      - /app/node_modules
 
   swagger:
     image: swaggerapi/swagger-ui:v5.31.2
@@ -87,13 +90,10 @@ services:
     networks:
       - fullstack
 
-  jsonserver:
-    image: idomi27/json-server:26
+  mailcatcher:
+    image: dockage/mailcatcher:0.9.0
     networks:
       - fullstack
-    volumes:
-      - ./jsonserver:/app
-      - /app/node_modules
 
   caddy:
     image: caddy:2.10.2-alpine
