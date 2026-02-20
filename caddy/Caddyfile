@@ -11,6 +11,10 @@ http://responsive.vm1.test, http://responsive.vm2.test, http://responsive.vm3.te
 	file_server
 }
 
+http://frontend.vm1.test, http://frontend.vm2.test, http://frontend.vm3.test, http://frontend.vm4.test, http://frontend.vm5.test, http://frontend.vm6.test {
+	reverse_proxy frontend:3000
+}
+
 http://pma.vm1.test, http://pma.vm2.test, http://pma.vm3.test, http://pma.vm4.test, http://pma.vm5.test, http://pma.vm6.test {
 	reverse_proxy phpmyadmin:80
 }
