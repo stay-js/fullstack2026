@@ -1,0 +1,100 @@
+networks:
+  fullstack: ~
+
+volumes:
+  mysql_data: ~
+  caddy_data: ~
+  shared_composer:
+    external: true
+
+services:
+  db:
+    image: mysql:9.5.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - TZ=${TZ}
+    volumes:
+      - "mysql_data:/var/lib/mysql:rw"
+    ports:
+      - 3306:3306
+    networks:
+      - fullstack
+    healthcheck:
+      test: /usr/bin/mysql --user=root --password=$DB_ROOT_PASSWORD --execute "SHOW DATABASES;"
+      timeout: 5s
+      retries: 18
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=${DB_HOST}
+      - PMA_PORT=${DB_PORT}
+      - PMA_ABSOLUTE_URI=${PMA_ABSOLUTE_URI}
+      - UPLOAD_LIMIT=${PMA_UPLOAD_LIMIT}
+    networks:
+      - fullstack
+
+  backend:
+    image: nz/backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
+      - ./backend:/www:rw
+      - ./.env:/www/.env:rw
+      - shared_composer:/home/phpdocker/.composer
+    networks:
+      - fullstack
+    depends_on:
+      db:
+        condition: service_healthy
+
+  mailcatcher:
+    image: dockage/mailcatcher:0.9.0
+    networks:
+      - fullstack
+
+  swagger:
+    image: swaggerapi/swagger-ui:v5.31.2
+    volumes:
+      - ./swagger/openapi.yaml:/docs/openapi.yaml
+    environment:
+      - SWAGGER_JSON=/docs/openapi.yaml
+      - DISPLAY_OPERATION_ID=true
+      - VALIDATOR_URL=null
+    networks:
+      - fullstack
+
+  docs:
+    image: znagyy/docs:1.0.1
+    volumes:
+      - ./docs/content:/app/content
+      - ./docs/public:/app/public
+      - ./docs/app/_meta.global.tsx:/app/_meta.global.tsx
+      - ./.env:/app/.env:ro
+    environment:
+      - DOCS_ENV=${DOCS_ENV}
+    networks:
+      - fullstack
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./backend:/www:ro
+      - ./responsive:/responsive:ro
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    networks:
+      - fullstack
