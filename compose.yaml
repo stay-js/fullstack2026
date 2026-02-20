@@ -59,6 +59,19 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    image: znagyy/frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    pull_policy: build
+    volumes:
+      - ./frontend:/app
+      - ./.env:/app/.env:ro
+      - /app/node_modules
+    networks:
+      - fullstack
+
   jsonserver:
     image: idomi27/json-server:26
     networks:
