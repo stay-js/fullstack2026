@@ -47,6 +47,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    pull_policy: build
     volumes:
       - ./backend/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
       - ./backend:/www:rw
