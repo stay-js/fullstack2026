@@ -43,7 +43,7 @@ services:
       - fullstack
 
   backend:
-    image: nz/backend
+    image: znagyy/backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -85,6 +85,14 @@ services:
       - DOCS_ENV=${DOCS_ENV}
     networks:
       - fullstack
+
+  jsonserver:
+    image: idomi27/json-server:26
+    networks:
+      - fullstack
+    volumes:
+      - ./jsonserver:/app
+      - /app/node_modules
 
   caddy:
     image: caddy:2.10.2-alpine

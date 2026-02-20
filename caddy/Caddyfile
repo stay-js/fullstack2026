@@ -25,3 +25,7 @@ http://swagger.vm1.test, http://swagger.vm2.test, http://swagger.vm3.test, http:
 http://pma.vm1.test, http://pma.vm2.test, http://pma.vm3.test, http://pma.vm4.test, http://pma.vm5.test, http://pma.vm6.test {
 	reverse_proxy phpmyadmin:80
 }
+
+http://jsonserver.vm1.test, http://jsonserver.vm2.test, http://jsonserver.vm3.test, http://jsonserver.vm4.test, http://jsonserver.vm5.test, http://jsonserver.vm6.test {
+  reverse_proxy jsonserver:3000
+}
