@@ -33,3 +33,21 @@ docker compose down -v
 ```
 
 - A `-v` kapcsoló hatására a volume-ok is törlődnek, így az adatbázisban tárolt adatok elvesznek.
+
+## Frontend függőségek kezelése
+
+Amennyiben a frontend csomaghoz új függőséget szeretnél hozzáadni, törölni, frissíteni:
+
+1. A csomag telepítését, eltávolítását, frissítését a host rendszeren végezd el. (`pnpm add` / `pnpm remove`)
+
+2. Ezt követően build-eld újra a frontend imaget:
+
+```bash
+docker compose build frontend
+```
+
+3. Majd indítsd újra a frontend containert:
+
+```bash
+docker compose restart frontend
+```
