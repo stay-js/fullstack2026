@@ -51,3 +51,10 @@ docker compose build frontend
 ```bash
 docker compose restart frontend
 ```
+
+## Justfile
+
+[Just](https://github.com/casey/just) telepítése után:
+
+- Elérhető receptek listázása: `just --list`
+- Alapértelmezett recept futtatása: `just` vagy `just default`
