@@ -40,17 +40,13 @@ Amennyiben a frontend csomaghoz új függőséget szeretnél hozzáadni, töröl
 
 1. A csomag telepítését, eltávolítását, frissítését a host rendszeren végezd el. (`pnpm add` / `pnpm remove`)
 
-2. Ezt követően build-eld újra a frontend imaget:
+2. Ezt követően build-eld és indítsd újra a frontend konténert a `-V` kapcsolóval, amely újra létrehozza az anonymous volume-okat:
 
 ```bash
-docker compose build frontend
+docker compose up --build -V frontend
 ```
 
-3. Majd indítsd újra a frontend containert:
-
-```bash
-docker compose restart frontend
-```
+> ⚠️ A `-V` (`--renew-anon-volumes`) kapcsoló nélkül a régi `node_modules` volume marad érvényben, és az új csomagok nem lesznek elérhetők a konténerben.
 
 ## Justfile
 
