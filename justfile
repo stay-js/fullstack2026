@@ -55,5 +55,5 @@ seed:
 
 # Runs linter
 [group('frontend')]
-lint:
-    docker compose exec frontend pnpm lint
+lint *FLAGS:
+    docker compose exec frontend pnpm lint {{FLAGS}}
