@@ -3,25 +3,25 @@ import { type ZodType } from 'zod';
 class ApiError extends Error {
   constructor(
     public method: string,
-    public url: string,
+    public path: string,
     public status: number,
   ) {
-    super(`API ${method} request to ${url} failed with status ${status}`);
+    super(`API ${method} request to ${path} failed with status ${status}`);
     this.name = 'ApiError';
   }
 }
 
-export function DELETE<T>(url: string, schema?: ZodType<T>) {
-  return request(url, { method: 'DELETE' }, schema);
+export function DELETE<T>(path: string, schema?: ZodType<T>) {
+  return request(path, { method: 'DELETE' }, schema);
 }
 
-export function GET<T>(url: string, schema: ZodType<T>) {
-  return request(url, undefined, schema);
+export function GET<T>(path: string, schema: ZodType<T>) {
+  return request(path, undefined, schema);
 }
 
-export function POST<T>(url: string, body?: unknown, schema?: ZodType<T>) {
+export function POST<T>(path: string, body?: unknown, schema?: ZodType<T>) {
   return request(
-    url,
+    path,
     {
       body: body ? JSON.stringify(body) : undefined,
       headers: { 'Content-Type': 'application/json' },
@@ -31,9 +31,9 @@ export function POST<T>(url: string, body?: unknown, schema?: ZodType<T>) {
   );
 }
 
-export function PUT<T>(url: string, body?: unknown, schema?: ZodType<T>) {
+export function PUT<T>(path: string, body?: unknown, schema?: ZodType<T>) {
   return request(
-    url,
+    path,
     {
       body: body ? JSON.stringify(body) : undefined,
       headers: { 'Content-Type': 'application/json' },
@@ -44,14 +44,14 @@ export function PUT<T>(url: string, body?: unknown, schema?: ZodType<T>) {
 }
 
 async function request<T>(
-  url: string,
+  path: string,
   options?: RequestInit,
   schema?: ZodType<T>,
 ): Promise<null | T> {
-  const res = await fetch(url, options);
+  const res = await fetch(`${import.meta.env.VITE_API_URL}${path}`, options);
 
   if (!res.ok) {
-    throw new ApiError(options?.method ?? 'GET', url, res.status);
+    throw new ApiError(options?.method ?? 'GET', path, res.status);
   }
 
   if (res.status === 204) return null;
