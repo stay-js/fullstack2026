@@ -71,6 +71,7 @@ services:
       - ./frontend:/app
       - ./.env:/app/.env:ro
       - /app/node_modules
+      - shared_pnpm:/shared_pnpm
     networks:
       - fullstack
     pull_policy: build
@@ -121,4 +122,6 @@ volumes:
   mysql_data: ~
   caddy_data: ~
   shared_composer:
+    external: true
+  shared_pnpm:
     external: true
