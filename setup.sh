@@ -20,3 +20,6 @@ else
     echo "Docker volume 'shared_pnpm' does not exist. Creating..."
     docker volume create shared_pnpm
 fi
+
+echo "Installing Frontend dependencies on host machine..."
+cd frontend && pnpm install
