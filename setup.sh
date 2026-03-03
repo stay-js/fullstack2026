@@ -22,4 +22,9 @@ else
 fi
 
 echo "Installing Frontend dependencies on host machine..."
-cd frontend && pnpm install
+docker run --rm \
+  -v "$(pwd)/frontend:/app" \
+  -v shared_pnpm:/shared_pnpm \
+  -w /app \
+  node:24-alpine \
+  sh -c "corepack enable && pnpm install --store-dir /shared_pnpm --dangerously-allow-all-builds"
