@@ -1,4 +1,4 @@
-import { type ZodType } from 'zod';
+import { z, type ZodType } from 'zod';
 
 class ApiError extends Error {
   constructor(
@@ -9,6 +9,10 @@ class ApiError extends Error {
     super(`API ${method} request to ${path} failed with status ${status}`);
     this.name = 'ApiError';
   }
+}
+
+export function createApiResponseSchema<T extends ZodType>(dataSchema: T) {
+  return z.object({ data: dataSchema });
 }
 
 export function DELETE<T>(path: string, schema?: ZodType<T>) {
