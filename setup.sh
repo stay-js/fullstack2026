@@ -28,3 +28,11 @@ docker run --rm \
   -w /app \
   node:24-alpine \
   sh -c "corepack enable && pnpm install --store-dir /shared_pnpm --dangerously-allow-all-builds"
+
+echo "Installing Responsive dependencies on host machine..."
+docker run --rm \
+  -v "$(pwd)/responsive:/app" \
+  -v shared_pnpm:/shared_pnpm \
+  -w /app \
+  node:24-alpine \
+  sh -c "corepack enable && pnpm install --store-dir /shared_pnpm --dangerously-allow-all-builds"

@@ -6,9 +6,7 @@ http://backend.vm1.test, http://backend.vm2.test, http://backend.vm3.test, http:
 }
 
 http://responsive.vm1.test, http://responsive.vm2.test, http://responsive.vm3.test, http://responsive.vm4.test, http://responsive.vm5.test, http://responsive.vm6.test {
-	root * /responsive
-	try_files {path} /index.html
-	file_server
+	reverse_proxy responsive:8080
 }
 
 http://frontend.vm1.test, http://frontend.vm2.test, http://frontend.vm3.test, http://frontend.vm4.test, http://frontend.vm5.test, http://frontend.vm6.test {
